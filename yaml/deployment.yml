@@ -28,8 +28,9 @@ properties:
     - name: sunntigsapp
       properties:
         image: ${DeploymentImage}
-        - port: 3000
-          protocol: TCP
+        ports:
+          - port: 3000
+            protocol: TCP
         environmentVariables:
         - name: PORT
           value: 3000
