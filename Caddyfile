@@ -1,0 +1,7 @@
+pitchbettermakememoney.com {
+    reverse_proxy http://localhost:3000
+}
+
+neuerdnslabelsunntigsapp.switzerlandnorth.azurecontainer.io {
+    reverse_proxy http://localhost:3000
+}

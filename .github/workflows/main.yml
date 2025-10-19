@@ -7,6 +7,11 @@ name: main-deployment
 jobs:
     build-and-deploy:
         runs-on: ubuntu-latest
+        env:
+          REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+          REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+          STORAGE_ACCOUNT_NAME: ${{ secrets.STORAGE_ACCOUNT_NAME }}
+          STORAGE_ACCOUNT_KEY: ${{ secrets.STORAGE_ACCOUNT_KEY }}
         steps:
         # checkout the repo
         - name: 'Checkout GitHub Action'
@@ -26,16 +31,10 @@ jobs:
         - run: |
             docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/sunntigsapp:${{ github.sha }}
             docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/sunntigsapp:${{ github.sha }}
-
+        - name: 'Replace variables in deployment.yml'
+          run: |
+            envsubst < yaml/deployment.yml > yaml/deployment-processed.yml
+        
         - name: 'Deploy to Azure Container Instances'
-          uses: 'azure/aci-deploy@v1'
-          with:
-            resource-group: ${{ secrets.RESOURCE_GROUP }}
-            dns-name-label: abidennissunntigsapp
-            image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/sunntigsapp:${{ github.sha }}
-            registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
-            registry-username: ${{ secrets.REGISTRY_USERNAME }}
-            registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-            name: sunntigsapp-containerinstance
-            location: 'switzerlandnorth'
-            ports: 3000
+          run: |
+            az container create --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --file yaml/deployment-processed.yml 
