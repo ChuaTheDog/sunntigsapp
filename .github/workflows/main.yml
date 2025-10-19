@@ -37,4 +37,4 @@ jobs:
         
         - name: 'Deploy to Azure Container Instances'
           run: |
-            az container create --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --file yaml/deployment-processed.yml 
+            az container create --resource-group ${{ secrets.RESOURCE_GROUP }} --file yaml/deployment-processed.yml 
