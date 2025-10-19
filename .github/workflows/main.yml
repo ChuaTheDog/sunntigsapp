@@ -33,6 +33,7 @@ jobs:
             docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/sunntigsapp:${{ github.sha }}
         - name: 'Replace variables in deployment.yml'
           run: |
+            export DeploymentImage=${{ secrets.REGISTRY_LOGIN_SERVER }}/sunntigsapp:${{ github.sha }}
             envsubst < yaml/deployment.yml > yaml/deployment-processed.yml
         
         - name: 'Deploy to Azure Container Instances'

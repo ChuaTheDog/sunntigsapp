@@ -27,8 +27,7 @@ properties:
             mountPath: /config
     - name: sunntigsapp
       properties:
-        image: adcontainerregistry.azurecr.io/sunntigsapp:8b49ad5c0a8bde536817e3eca1c1d84b20fd644b
-        ports:
+        image: ${DeploymentImage}
         - port: 3000
           protocol: TCP
         environmentVariables:
