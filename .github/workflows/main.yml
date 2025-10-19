@@ -38,3 +38,4 @@ jobs:
             registry-password: ${{ secrets.REGISTRY_PASSWORD }}
             name: sunntigsapp-containerinstance
             location: 'switzerlandnorth'
+            ports: 3000
